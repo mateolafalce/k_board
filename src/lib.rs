@@ -27,6 +27,7 @@ pub enum Keys {
     Letter(char),
     F(u8),
     Ctrl(char),
+		Alt(char),
     Null,
 }
 
