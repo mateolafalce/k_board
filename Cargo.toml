@@ -1,12 +1,13 @@
 [package]
 name = "k_board"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 license = "GPL-3.0"
 authors = ["Mateo Lafalce", "mateolafalce@protonmail.com"]
 description = "A keyboard event handler that allows dynamic development"
 keywords = ["keyboard", "terminal", "handler", "event", "keys"]
 repository = "https://github.com/mateolafalce/k_board"
+categories = ["text-processing", "text-editors", "os", "encoding",  "development-tools::ffi"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
