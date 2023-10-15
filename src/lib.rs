@@ -1,14 +1,15 @@
-extern crate libc;
+//extern crate libc;
 
-use libc::{tcgetattr, tcsetattr, termios};
+//use libc::{tcgetattr, /*tcsetattr termios*/};
 use std::io::{self, Read, Write};
+use std::ffi::c_int;
 
-pub const VTIME: usize = 5;
-pub const VMIN: usize = 6;
-pub const ICANON: u32 = 0x00000002;
-pub const ECHO: u32 = 0x00000008;
-pub const TCSANOW: i32 = 0;
-pub const STDIN_FILENO: i32 = 0;
+const VTIME: usize = 5;
+const VMIN: usize = 6;
+const ICANON: u32 = 0x00000002;
+const ECHO: u32 = 0x00000008;
+const TCSANOW: i32 = 0;
+const STDIN_FILENO: i32 = 0;
 
 pub enum Keys {
     Up,
@@ -266,7 +267,7 @@ pub fn get_key_from_keyboard() -> Keys {
         _ => {}
     }
     std::io::stdout().flush().unwrap();
-    restore_termios(termios_enviroment).unwrap();
+    restore_termios(&termios_enviroment).unwrap();
     key
 }
 
@@ -276,7 +277,6 @@ impl Keyboard {
     pub fn new() -> Self {
         Keyboard
     }
-
     pub fn read_key(&mut self) -> Keys {
         get_key_from_keyboard()
     }
@@ -291,10 +291,10 @@ impl Iterator for Keyboard {
 
 pub fn setup_raw_mode() -> io::Result<termios> {
     let mut termios: termios = unsafe { std::mem::zeroed() };
-    if unsafe { tcgetattr(libc::STDIN_FILENO, &mut termios) } < 0 {
+    if unsafe { tcgetattr(STDIN_FILENO, &mut termios) } < 0 {
         return Err(io::Error::last_os_error());
     }
-    let original_termios: termios = termios.clone();
+    let original_termios = termios.clone();
     termios.c_lflag &= !(ICANON | ECHO);
     termios.c_cc[VMIN] = 0;
     termios.c_cc[VTIME] = 1;
@@ -304,9 +304,35 @@ pub fn setup_raw_mode() -> io::Result<termios> {
     Ok(original_termios)
 }
 
-pub fn restore_termios(original_termios: termios) -> io::Result<()> {
-    if unsafe { tcsetattr(STDIN_FILENO, TCSANOW, &original_termios) } < 0 {
+pub fn restore_termios(original_termios: &termios) -> io::Result<()> {
+    if unsafe { tcsetattr(STDIN_FILENO, TCSANOW, original_termios) } < 0 {
         return Err(io::Error::last_os_error());
     }
     Ok(())
+}
+
+fn io_result(result: c_int) -> io::Result<()> {
+    match result {
+        0 => Ok(()),
+        _ => Err(io::Error::last_os_error()),
+    }
+}
+
+#[derive(Clone)]
+#[repr(C)]
+pub struct termios {
+    pub c_iflag: u32,
+    pub c_oflag: u32,
+    pub c_cflag: u32,
+    pub c_lflag: u32,
+    c_line: u8,
+    pub c_cc: [u8; 32],
+    c_ispeed: u32,
+    c_ospeed: u32
+}
+
+#[link(name = "c")]
+extern "C" {
+    pub fn tcsetattr(fd: c_int, optional_actions: c_int, termios_p: *const termios) -> c_int;
+    pub fn tcgetattr(fd: c_int, termios: *mut termios) -> c_int;
 }

@@ -1,6 +1,6 @@
 <div align="center">
 
-# K_board
+# k_board
 
 </div>
 
