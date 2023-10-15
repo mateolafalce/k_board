@@ -19,31 +19,31 @@ pub enum Keys {
     Plus,
     Minus,
     Equal,
-    Power,
-    Slash,
-    Backslash,
-    Asterisk,
+    Power,                 ^
+    Slash,                 /
+    Backslash,             \
+    Asterisk,              *
     Point,
     Comma,
     Hashtag,
-    Pipe,
-    Percent,
+    Pipe,                  |
+    Percent,               %
     Ampersand,
-    Currency,
-    TwoPoints,
-    Semicolon,
-    OpenSquareBracket,
-    CloseSquareBracket,
-    OpenCurlyBrace,
-    CloseCurlyBrace,
-    OpenQuestionMark,
-    CloseQuestionMark,
-    OpenParenthesis,
-    CloseParenthesis,
-    LessThan,
-    GreaterThan,
-    Apostrophe,
-    At,
+    Currency,              $
+    TwoPoints,             :
+    Semicolon,             ;
+    OpenSquareBracket,     [
+    CloseSquareBracket,    ]
+    OpenCurlyBrace,        {
+    CloseCurlyBrace,       }
+    OpenQuestionMark,      ¿
+    CloseQuestionMark,     ?
+    OpenParenthesis,       (
+    CloseParenthesis,      )
+    LessThan,              <
+    GreaterThan,           >
+    Apostrophe,            ' 
+    At,                    @
     Home,
     End,
     Tab,
@@ -57,3 +57,37 @@ pub enum Keys {
     Null,
 }
 ```
+
+## Example
+
+```rust
+use k_board::{Keyboard, Keys};
+
+fn main() {
+    std::process::Command::new("clear").status().unwrap();
+    println!("[*] I use k_board lightweight software");
+    println!("[ ] I use heavyweight software");
+    for key in Keyboard::new() {
+        match key {
+            Keys::Up => {
+                std::process::Command::new("clear").status().unwrap();
+                println!("[*] I use k_board lightweight software");
+                println!("[ ] I use heavyweight software");
+            }
+            Keys::Down => {
+                std::process::Command::new("clear").status().unwrap();
+                println!("[ ] I use k_board lightweight software");
+                println!("[*] I use heavyweight software");
+            }
+            Keys::Enter => {
+                break;
+            }
+            _ => {}
+        }
+    }
+}
+```
+
+## Contributing 
+
+Feel free to contribute to the repository. Make each modification to the code formatted with code before with `cargo fmt`.
