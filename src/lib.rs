@@ -311,13 +311,6 @@ pub fn restore_termios(original_termios: &termios) -> io::Result<()> {
     Ok(())
 }
 
-fn io_result(result: c_int) -> io::Result<()> {
-    match result {
-        0 => Ok(()),
-        _ => Err(io::Error::last_os_error()),
-    }
-}
-
 #[derive(Clone)]
 #[repr(C)]
 pub struct termios {
