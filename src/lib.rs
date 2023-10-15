@@ -1,15 +1,7 @@
-//extern crate libc;
-
-//use libc::{tcgetattr, /*tcsetattr termios*/};
-use std::io::{self, Read, Write};
-use std::ffi::c_int;
-
-const VTIME: usize = 5;
-const VMIN: usize = 6;
-const ICANON: u32 = 0x00000002;
-const ECHO: u32 = 0x00000008;
-const TCSANOW: i32 = 0;
-const STDIN_FILENO: i32 = 0;
+use std::{
+    ffi::c_int,
+    io::{self, Read, Write},
+};
 
 pub enum Keys {
     Up,
@@ -291,21 +283,21 @@ impl Iterator for Keyboard {
 
 pub fn setup_raw_mode() -> io::Result<termios> {
     let mut termios: termios = unsafe { std::mem::zeroed() };
-    if unsafe { tcgetattr(STDIN_FILENO, &mut termios) } < 0 {
+    if unsafe { tcgetattr(0, &mut termios) } < 0 {
         return Err(io::Error::last_os_error());
     }
     let original_termios = termios.clone();
-    termios.c_lflag &= !(ICANON | ECHO);
-    termios.c_cc[VMIN] = 0;
-    termios.c_cc[VTIME] = 1;
-    if unsafe { tcsetattr(STDIN_FILENO, TCSANOW, &termios) } < 0 {
+    termios.c_lflag &= !(0x00000002 | 0x00000008);
+    termios.c_cc[6] = 0;
+    termios.c_cc[5] = 1;
+    if unsafe { tcsetattr(0, 0, &termios) } < 0 {
         return Err(io::Error::last_os_error());
     }
     Ok(original_termios)
 }
 
 pub fn restore_termios(original_termios: &termios) -> io::Result<()> {
-    if unsafe { tcsetattr(STDIN_FILENO, TCSANOW, original_termios) } < 0 {
+    if unsafe { tcsetattr(0, 0, original_termios) } < 0 {
         return Err(io::Error::last_os_error());
     }
     Ok(())
@@ -321,7 +313,7 @@ pub struct termios {
     c_line: u8,
     pub c_cc: [u8; 32],
     c_ispeed: u32,
-    c_ospeed: u32
+    c_ospeed: u32,
 }
 
 #[link(name = "c")]
