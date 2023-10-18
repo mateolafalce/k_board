@@ -4,7 +4,7 @@
 
 </div>
 
-A lightweight keyboard mannager developed for dynamic programs by listening to keyboard events in raw mode (without the need to press enter). The handler has all the standard events of a Western keyboard.
+A lightweight keyboard mannager developed for dynamic programs by listening to keyboard events in raw mode (without the need to press enter). The handler has all the standard events of a western keyboard.
 
 - Gnu/Linux && Unix like systems
 
