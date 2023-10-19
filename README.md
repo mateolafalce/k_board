@@ -2,7 +2,13 @@
 
 # k_board
 
+![docs.rs](https://img.shields.io/docsrs/k_board)
+![Crates.io](https://img.shields.io/crates/l/k_board)
+![#c5f015](https://img.shields.io/crates/d/k_board)
+
+
 </div>
+
 
 A lightweight keyboard mannager developed for dynamic programs by listening to keyboard events in raw mode (without the need to press enter). The handler has all the standard events of a western keyboard.
 
