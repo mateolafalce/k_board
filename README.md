@@ -2,10 +2,9 @@
 
 # k_board
 
-![docs.rs](https://img.shields.io/docsrs/k_board)
-![Crates.io](https://img.shields.io/crates/l/k_board)
-![#c5f015](https://img.shields.io/crates/d/k_board)
-
+[<img alt="crates.io" src="https://img.shields.io/crates/v/k_board.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/k_board)
+[<img alt="github" src="https://img.shields.io/badge/github-mateolafalce/k__board-8da0cb?style=for-the-badge&labelColor=555555&logo=github" height="20">](https://github.com/mateolafalce/k_board)
+[<img alt="docs.rs" src="https://img.shields.io/badge/docs.rs-k__board-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://docs.rs/k_board)
 
 </div>
 
