@@ -11,7 +11,7 @@
 
 A lightweight keyboard mannager developed for dynamic programs by listening to keyboard events in raw mode (without the need to press enter). The handler has all the standard events of a western keyboard.
 
-- Gnu/Linux && Unix like systems
+- Gnu/Linux 
 
 ```rust
 pub enum Keys {
@@ -98,4 +98,31 @@ fn menu(operation: u8) {
 
 ## Contributing 
 
-Feel free to contribute to the repository. Make each modification to the code formatted with code before with `cargo fmt`.
+Feel free to contribute to the repository. Make each modification to the code formatted with code before with `cargo fmt`. Below, a fragment that allows you to visualize in hexadecimal the key or the event executed on your keyboard:
+
+```rust
+use std::io::{Read, Write};
+
+fn main() -> std::io::Result<()> {
+    println!("Press a key or an keyboard event!");
+    loop {
+        let _ = get_key();
+    }
+}
+
+pub fn get_key() -> std::io::Result<()> {
+    let termios_enviroment: k_board::termios = k_board::setup_raw_mode().unwrap();
+    std::io::stdout().flush().unwrap();
+    let mut buffer: [u8; 3] = [0; 3];
+    std::io::stdin().read(&mut buffer).unwrap();
+    if buffer[0] != 0x00 {
+        println!(
+            "[0x{:x?}, 0x{:x?}, 0x{:x?}]",
+            buffer[0], buffer[1], buffer[2]
+        );
+    }
+    std::io::stdout().flush().unwrap();
+    k_board::restore_termios(&termios_enviroment).unwrap();
+    Ok(())
+}
+```
