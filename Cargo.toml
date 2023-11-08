@@ -1,11 +1,11 @@
 [package]
 name = "k_board"
-version = "1.1.6"
+version = "1.1.7"
 edition = "2021"
 license = "GPL-3.0"
 authors = ["Mateo Lafalce", "mateolafalce@protonmail.com"]
 description = "A keyboard event handler that allows dynamic development"
-keywords = ["keyboard", "terminal", "handler", "event", "keys"]
+keywords = ["keyboard", "terminal", "tui", "tty", "termios"]
 repository = "https://github.com/mateolafalce/k_board"
 categories = ["text-processing", "text-editors", "os", "encoding",  "development-tools::ffi"]
 
