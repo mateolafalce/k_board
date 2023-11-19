@@ -23,34 +23,39 @@ pub enum Keys {
     Space,
     Delete,
     Escape,
-    Plus,
-    Minus,
-    Equal,
-    Power,                 ^
-    Slash,                 /
-    Backslash,             \
-    Asterisk,              *
-    Point,
-    Comma,
-    Hashtag,
-    Pipe,                  |
-    Percent,               %
-    Ampersand,
-    Currency,              $
-    TwoPoints,             :
-    Semicolon,             ;
-    OpenSquareBracket,     [
-    CloseSquareBracket,    ]
-    OpenCurlyBrace,        {
-    CloseCurlyBrace,       }
-    OpenQuestionMark,      ¿
-    CloseQuestionMark,     ?
-    OpenParenthesis,       (
-    CloseParenthesis,      )
-    LessThan,              <
-    GreaterThan,           >
-    Apostrophe,            ' 
-    At,                    @
+    Plus,                    +
+    Minus,                   -
+    Equal,                   =
+    Power,                   ^
+    Slash,                   /
+    Backslash,               \
+    Asterisk,                *
+    Point,                   .
+    Comma,                   ,
+    Hashtag,                 #
+    Pipe,                    |
+    Percent,                 %
+    Ampersand,               &
+    Currency,                $
+    TwoPoints,               :
+    Semicolon,               ;
+    OpenSquareBracket,       [
+    CloseSquareBracket,      ]
+    OpenCurlyBrace,          {
+    CloseCurlyBrace,         }
+    OpenQuestionMark,        ¿
+    CloseQuestionMark,       ?
+    OpenParenthesis,         (
+    CloseParenthesis,        )
+    LessThan,                <
+    GreaterThan,             >
+    Apostrophe,              ' 
+    At,                      @
+    OpenExclamationMark,     ¡
+    ClosedExclamationMark,   !
+    QuotationMark,           "
+    Backquote,               `
+    AcuteAccent,             ´
     Home,
     End,
     Tab,

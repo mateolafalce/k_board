@@ -18,7 +18,7 @@
 //! [<img alt="docs.rs" src="https://img.shields.io/badge/docs.rs-k__board-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://docs.rs/k_board)
 //!
 //! A lightweight keyboard mannager developed for dynamic programs by listening to keyboard events in raw mode (without the need to press enter). The handler has all the standard events of a western keyboard.
-//! 
+//!
 //! - Gnu/Linux
 //!
 //! # Examples
@@ -64,7 +64,7 @@
 //!         let _ = get_key();
 //!     }
 //! }
-//! 
+//!
 //! pub fn get_key() -> std::io::Result<()> {
 //!     let termios_enviroment: k_board::termios = k_board::setup_raw_mode().unwrap();
 //!     std::io::stdout().flush().unwrap();
@@ -92,7 +92,7 @@ pub enum Keys {
     Right,
     Enter,
     Space,
-		Tab,
+    Tab,
     Delete,
     Escape,
     Plus,
@@ -123,6 +123,11 @@ pub enum Keys {
     GreaterThan,
     Apostrophe,
     At,
+    OpenExclamationMark,
+    ClosedExclamationMark,
+    QuotationMark,
+    Backquote,
+    AcuteAccent,
     Home,
     End,
     Backtab,
@@ -147,7 +152,7 @@ pub fn get_key_from_keyboard() -> Keys {
         [0x1B, 0x5B, 0x43] => key = Keys::Right,
         [0x1B, 0x5B, 0x44] => key = Keys::Left,
         [0x1B, 0x5B, 0x48] => key = Keys::Home,
-				[0x09, 0x00, 0x00] => key = Keys::Tab,
+        [0x09, 0x00, 0x00] => key = Keys::Tab,
         [0x1B, 0x5B, 0x46] => key = Keys::End,
         [0x1B, 0x5B, 0x5a] => key = Keys::Backtab,
         [0x0A, 0x00, 0x00] => key = Keys::Enter,
@@ -181,6 +186,11 @@ pub fn get_key_from_keyboard() -> Keys {
         [0x3e, 0x00, 0x00] => key = Keys::GreaterThan,
         [0x27, 0x00, 0x00] => key = Keys::Apostrophe,
         [0x40, 0x00, 0x00] => key = Keys::At,
+        [0xc2, 0xa1, 0x0] => key = Keys::OpenExclamationMark,
+        [0x21, 0x00, 0x00] => key = Keys::ClosedExclamationMark,
+        [0x22, 0x0, 0x0] => key = Keys::QuotationMark,
+        [0x60, 0x0, 0x0] => key = Keys::Backquote,
+        [0xc2, 0xb4, 0x00] => key = Keys::AcuteAccent,
         [0x30, 0x00, 0x00] => key = Keys::Number(0),
         [0x31, 0x00, 0x00] => key = Keys::Number(1),
         [0x32, 0x00, 0x00] => key = Keys::Number(2),
@@ -371,6 +381,10 @@ pub struct termios {
 
 #[link(name = "c")]
 extern "C" {
-    pub fn tcsetattr(fd: std::ffi::c_int, optional_actions: std::ffi::c_int, termios_p: *const termios) -> std::ffi::c_int;
+    pub fn tcsetattr(
+        fd: std::ffi::c_int,
+        optional_actions: std::ffi::c_int,
+        termios_p: *const termios,
+    ) -> std::ffi::c_int;
     pub fn tcgetattr(fd: std::ffi::c_int, termios: *mut termios) -> std::ffi::c_int;
 }
