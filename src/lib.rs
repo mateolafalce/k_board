@@ -350,6 +350,7 @@ pub fn setup_raw_mode() -> io::Result<termios> {
     }
     let original_termios = termios.clone();
     termios.c_lflag &= !(0x00000002 | 0x00000008);
+    termios.c_iflag &= !(0x00000400 | 0x00001000 | 0x00000800);
     termios.c_cc[6] = 0;
     termios.c_cc[5] = 1;
     if unsafe { tcsetattr(0, 0, &termios) } < 0 {
