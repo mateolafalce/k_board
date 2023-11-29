@@ -85,6 +85,7 @@
 
 use std::io::{self, Read, Write};
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum Keys {
     Up,
     Down,
