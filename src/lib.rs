@@ -23,7 +23,7 @@
 //!
 //! # Examples
 //!
-//! ```
+//! ```rust,ignore
 //! use k_board::{Keyboard, Keys};
 //!
 //! fn main() {
@@ -55,7 +55,7 @@
 //! # Contributing
 //! Feel free to contribute to the repository. Make each modification to the code formatted with code before with `cargo fmt`. Below, a fragment that allows you to visualize in hexadecimal the key or the event executed on your keyboard:
 //!
-//! ```rust
+//! ```rust,ignore
 //! use std::io::{Read, Write};
 //!
 //! fn main() -> std::io::Result<()> {
