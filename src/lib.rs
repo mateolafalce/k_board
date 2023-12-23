@@ -146,7 +146,10 @@ pub fn get_key_from_keyboard() -> Keys {
     std::io::stdout().flush().unwrap();
     let mut buffer: [u8; 3] = [0; 3];
     let mut key: Keys = Keys::Null;
-    std::io::stdin().read(&mut buffer).unwrap();
+    match std::io::stdin().read(&mut buffer) {
+        Ok(_) => (),
+        Err(err) => eprintln!("Error: {}", err),
+    }
     match buffer {
         [0x1B, 0x5B, 0x41] => key = Keys::Up,
         [0x1B, 0x5B, 0x42] => key = Keys::Down,
@@ -327,6 +330,12 @@ pub fn get_key_from_keyboard() -> Keys {
 }
 
 pub struct Keyboard;
+
+impl Default for Keyboard {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 impl Keyboard {
     pub fn new() -> Self {
