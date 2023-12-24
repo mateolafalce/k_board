@@ -1,6 +1,6 @@
 [package]
 name = "k_board"
-version = "1.1.11"
+version = "1.2.0"
 edition = "2021"
 license = "GPL-3.0"
 authors = ["Mateo Lafalce", "mateolafalce@protonmail.com"]
@@ -12,3 +12,12 @@ categories = ["text-processing", "text-editors", "os", "encoding",  "development
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+[features]
+standar = []
+numbers = []
+lower_letter = []
+upper_letter = []
+f = []
+ctrl_lower_letter = []
+alt_lower_letter = []

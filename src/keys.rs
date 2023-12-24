@@ -1,117 +1,26 @@
-<div align="center">
+pub const BYTES: usize = 3;
 
-# k_board
-
-[<img alt="crates.io" src="https://img.shields.io/crates/v/k_board.svg?style=for-the-badge&color=fc8d62&logo=rust" height="20">](https://crates.io/crates/k_board)
-[<img alt="github" src="https://img.shields.io/badge/github-mateolafalce/k__board-8da0cb?style=for-the-badge&labelColor=555555&logo=github" height="20">](https://github.com/mateolafalce/k_board)
-[<img alt="docs.rs" src="https://img.shields.io/badge/docs.rs-k__board-66c2a5?style=for-the-badge&labelColor=555555&logo=docs.rs" height="20">](https://docs.rs/k_board)
-
-</div>
-
-
-A lightweight keyboard mannager developed for dynamic programs by listening to keyboard events in raw mode (without the need to press enter). The handler has all the standard events of a western keyboard.
-
-- Gnu/Linux 
-
-```rust
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum Keys {
     Up,
     Down,
     Left,
     Right,
     Enter,
+    Home,
+    Tab,
+    Backtab,
     Space,
     Delete,
     Escape,
-    Char(char)
+    End,
+    Char(char),
     F(u8),
     Ctrl(char),
     Alt(char),
     Null,
 }
-```
 
-## Example
-
-```rust
-use k_board::{keyboard::Keyboard, keys::Keys};
-
-fn main() {
-    menu(0);
-    for key in Keyboard::new() {
-        match key {
-            Keys::Up => menu(0),
-            Keys::Down => menu(1),
-            Keys::Enter => break,
-            _ => {}
-        }
-    }
-}
-
-fn menu(operation: u8) {
-    std::process::Command::new("clear").status().unwrap();
-    let mut op: Vec<char> = vec!['*', ' '];
-    if operation == 1 {
-        op[0] = ' ';
-        op[1] = '*';
-    }
-    println!(
-        "[{}] I use k_board lightweight software\n[{}] I use heavyweight software",
-        op[0], op[1]
-    );
-}
-```
-
-## Contributing 
-
-Feel free to contribute to the repository. Make each modification to the code formatted with code before with `cargo fmt` && `cargo clippy`. Below, a fragment that allows you to visualize in hexadecimal the key or the event executed on your keyboard:
-
-```rust
-use k_board::termio::{restore_termios, setup_raw_mode, termios};
-use std::io::{Read, Write};
-
-fn main() -> std::io::Result<()> {
-    println!("Press a key or an keyboard event!");
-    loop {
-        let _ = get_key();
-    }
-}
-
-pub fn get_key() -> std::io::Result<()> {
-    let termios_enviroment: termios = setup_raw_mode()?;
-    std::io::stdout().flush().unwrap();
-    let mut buffer: [u8; 3] = [0; 3];
-    #[allow(clippy::unused_io_amount)]
-    std::io::stdin().read(&mut buffer)?;
-    if buffer[0] != 0x00 {
-        println!(
-            "[0x{:x?}, 0x{:x?}, 0x{:x?}]",
-            buffer[0], buffer[1], buffer[2]
-        );
-    }
-    std::io::stdout().flush().unwrap();
-    restore_termios(&termios_enviroment)?;
-    Ok(())
-}
-```
-
-## Features
-
-The library has different features depending on the developer's needs.
-
-- no-feature(default)
-- standar
-- numbers 
-- lower_letter 
-- upper_letter 
-- f 
-- ctrl_lower_letter 
-- alt_lower_letter 
-
-<details>
-<summary>no-feature(default)</summary>
-
-```rust
 pub const ARROWS_ENTER: [([u8; BYTES], Keys); 5] = [
     ([0x1B, 0x5B, 0x41], Keys::Up),
     ([0x1B, 0x5B, 0x42], Keys::Down),
@@ -119,14 +28,7 @@ pub const ARROWS_ENTER: [([u8; BYTES], Keys); 5] = [
     ([0x1B, 0x5B, 0x44], Keys::Left),
     ([0x0A, 0x00, 0x00], Keys::Enter),
 ];
-```
 
-</details>
-
-<details>
-<summary>standar</summary>
-
-```rust
 pub const STANDAR: [([u8; BYTES], Keys); 39] = [
     ([0x1B, 0x5B, 0x48], Keys::Home),
     ([0x09, 0x00, 0x00], Keys::Tab),
@@ -168,14 +70,7 @@ pub const STANDAR: [([u8; BYTES], Keys); 39] = [
     ([0x60, 0x0, 0x0], Keys::Char('`')),
     ([0xc2, 0xb4, 0x00], Keys::Char('´')),
 ];
-```
 
-</details>
-
-<details>
-<summary>numbers</summary>
-
-```rust
 pub const NUMBERS: [([u8; BYTES], Keys); 10] = [
     ([0x30, 0x00, 0x00], Keys::Char('0')),
     ([0x31, 0x00, 0x00], Keys::Char('1')),
@@ -188,13 +83,7 @@ pub const NUMBERS: [([u8; BYTES], Keys); 10] = [
     ([0x38, 0x00, 0x00], Keys::Char('8')),
     ([0x39, 0x00, 0x00], Keys::Char('9')),
 ];
-```
-</details>
 
-<details>
-<summary>lower_letter</summary>
-
-```rust
 pub const LOWER_LETTERS: [([u8; BYTES], Keys); 27] = [
     ([0x61, 0x00, 0x00], Keys::Char('a')),
     ([0x62, 0x00, 0x00], Keys::Char('b')),
@@ -224,13 +113,7 @@ pub const LOWER_LETTERS: [([u8; BYTES], Keys); 27] = [
     ([0x79, 0x00, 0x00], Keys::Char('y')),
     ([0x7A, 0x00, 0x00], Keys::Char('z')),
 ];
-```
-</details>
 
-<details>
-<summary>upper_letter</summary>
-
-```rust
 pub const UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x41, 0x00, 0x00], Keys::Char('A')),
     ([0x42, 0x00, 0x00], Keys::Char('B')),
@@ -260,13 +143,7 @@ pub const UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x59, 0x00, 0x00], Keys::Char('Y')),
     ([0x5A, 0x00, 0x00], Keys::Char('Z')),
 ];
-```
-</details>
 
-<details>
-<summary>f</summary>
-
-```rust
 pub const F: [([u8; BYTES], Keys); 12] = [
     ([0x1b, 0x4f, 0x50], Keys::F(1)),
     ([0x1b, 0x4f, 0x51], Keys::F(2)),
@@ -281,14 +158,7 @@ pub const F: [([u8; BYTES], Keys); 12] = [
     ([0x33, 0x7E, 0x00], Keys::F(11)),
     ([0x34, 0x7E, 0x00], Keys::F(12)),
 ];
-```
 
-</details>
-
-<details>
-<summary>ctrl_lower_letter</summary>
-
-```rust
 pub const CTRL_LOWER_LETTER: [([u8; BYTES], Keys); 24] = [
     ([0x01, 0x00, 0x00], Keys::Ctrl('a')),
     ([0x02, 0x00, 0x00], Keys::Ctrl('b')),
@@ -315,14 +185,7 @@ pub const CTRL_LOWER_LETTER: [([u8; BYTES], Keys); 24] = [
     ([0x19, 0x00, 0x00], Keys::Ctrl('y')),
     ([0x1A, 0x00, 0x00], Keys::Ctrl('z')),
 ];
-```
 
-</details>
-
-<details>
-<summary>alt_lower_letter</summary>
-
-```rust
 pub const ALT_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x61, 0x00], Keys::Alt('a')),
     ([0x1b, 0x62, 0x00], Keys::Alt('b')),
@@ -352,5 +215,3 @@ pub const ALT_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x79, 0x00], Keys::Alt('y')),
     ([0x1b, 0x7a, 0x00], Keys::Alt('z')),
 ];
-```
-</details>
