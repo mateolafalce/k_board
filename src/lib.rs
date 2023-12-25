@@ -112,7 +112,7 @@ pub fn get_key_from_keyboard() -> Keys {
         }
     }
 
-    #[cfg(feature = "standar")]
+    #[cfg(any(feature = "standar", feature = "full"))]
     for &(ref pattern, keys) in crate::keys::STANDAR.iter() {
         if buffer == *pattern {
             restore(&termios_enviroment);
@@ -120,7 +120,7 @@ pub fn get_key_from_keyboard() -> Keys {
         }
     }
 
-    #[cfg(feature = "numbers")]
+    #[cfg(any(feature = "numbers", feature = "full"))]
     for &(ref pattern, keys) in crate::keys::NUMBERS.iter() {
         if buffer == *pattern {
             restore(&termios_enviroment);
@@ -128,7 +128,7 @@ pub fn get_key_from_keyboard() -> Keys {
         }
     }
 
-    #[cfg(feature = "lower_letter")]
+    #[cfg(any(feature = "lower_letter", feature = "full"))]
     for &(ref pattern, keys) in crate::keys::LOWER_LETTERS.iter() {
         if buffer == *pattern {
             restore(&termios_enviroment);
@@ -136,7 +136,7 @@ pub fn get_key_from_keyboard() -> Keys {
         }
     }
 
-    #[cfg(feature = "upper_letter")]
+    #[cfg(any(feature = "upper_letter", feature = "full"))]
     for &(ref pattern, keys) in crate::keys::UPPER_LETTER.iter() {
         if buffer == *pattern {
             restore(&termios_enviroment);
@@ -144,7 +144,7 @@ pub fn get_key_from_keyboard() -> Keys {
         }
     }
 
-    #[cfg(feature = "f")]
+    #[cfg(any(feature = "f", feature = "full"))]
     for &(ref pattern, keys) in crate::keys::F.iter() {
         if buffer == *pattern {
             restore(&termios_enviroment);
@@ -152,7 +152,7 @@ pub fn get_key_from_keyboard() -> Keys {
         }
     }
 
-    #[cfg(feature = "ctrl_lower_letter")]
+    #[cfg(any(feature = "ctrl_lower_letter", feature = "full"))]
     for &(ref pattern, keys) in crate::keys::CTRL_LOWER_LETTER.iter() {
         if buffer == *pattern {
             restore(&termios_enviroment);
@@ -160,8 +160,24 @@ pub fn get_key_from_keyboard() -> Keys {
         }
     }
 
-    #[cfg(feature = "alt_lower_letter")]
+    #[cfg(any(feature = "alt_lower_letter", feature = "full"))]
     for &(ref pattern, keys) in crate::keys::ALT_LOWER_LETTER.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment);
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "alt_upper_letter", feature = "full"))]
+    for &(ref pattern, keys) in crate::keys::ALT_UPPER_LETTER.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment);
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "alt_gr_lower_letter", feature = "full"))]
+    for &(ref pattern, keys) in crate::keys::ALT_GR_LETTER.iter() {
         if buffer == *pattern {
             restore(&termios_enviroment);
             key = keys;

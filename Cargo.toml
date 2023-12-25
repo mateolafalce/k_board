@@ -1,9 +1,9 @@
 [package]
 name = "k_board"
-version = "1.2.0"
+version = "1.2.1"
 edition = "2021"
 license = "GPL-3.0"
-authors = ["Mateo Lafalce", "mateolafalce@protonmail.com"]
+authors = ["Mateo Lafalce <mateolafalce@protonmail.com>"]
 description = "A keyboard event handler that allows dynamic development"
 keywords = ["keyboard", "terminal", "tui", "tty", "termios"]
 repository = "https://github.com/mateolafalce/k_board"
@@ -21,3 +21,6 @@ upper_letter = []
 f = []
 ctrl_lower_letter = []
 alt_lower_letter = []
+alt_upper_letter = []
+alt_gr_letter = []
+full = []
