@@ -420,9 +420,13 @@ cargo build --features f &&
 cargo build --features ctrl_lower_letter &&
 cargo build --features ctrl_upper_letter &&
 cargo build --features ctrl_standar &&
+cargo build --features ctrl_numbers &&
 cargo build --features alt_lower_letter &&
 cargo build --features alt_upper_letter &&
-cargo build --features alt_gr_letter &&
+cargo build --features alt_numbers &&
+cargo build --features alt_gr_lower_letter &&
+cargo build --features alt_gr_upper_letter &&
+cargo build --features alt_gr_numbers &&
 cargo build --features full
 ```
 
