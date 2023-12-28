@@ -51,11 +51,12 @@ pub const ARROWS_ENTER: [([u8; BYTES], Keys); 5] = [
 ];
 
 #[cfg(any(feature = "standar", feature = "full"))]
-pub const STANDAR: [([u8; BYTES], Keys); 39] = [
+pub const STANDAR: [([u8; BYTES], Keys); 40] = [
     ([0x1B, 0x5B, 0x48], Keys::Home),
     ([0x09, 0x00, 0x00], Keys::Tab),
     ([0x1B, 0x5B, 0x46], Keys::End),
     ([0x1B, 0x5B, 0x5a], Keys::Backtab),
+    ([0x1b, 0x00, 0x00], Keys::Escape),
     ([0x20, 0x00, 0x00], Keys::Space),
     ([0x7F, 0x00, 0x00], Keys::Delete),
     ([0x2b, 0x00, 0x00], Keys::Char('+')),
@@ -251,6 +252,25 @@ pub const CTRL_STANDAR: [([u8; BYTES], Keys); 2] = [
     ([0x1f, 0x00, 0x00], Keys::Ctrl('-')),
 ];
 
+#[cfg(any(
+    feature = "ctrl_numbers",
+    feature = "alt_numbers",
+    feature = "alt_gr_numbers",
+    feature = "full"
+))]
+pub const CTRL_NUMBERS: [([u8; BYTES], Keys); 10] = [
+    ([0x30, 0x00, 0x00], Keys::Ctrl('0')),
+    ([0x31, 0x00, 0x00], Keys::Ctrl('1')),
+    ([0x32, 0x00, 0x00], Keys::Ctrl('2')),
+    ([0x33, 0x00, 0x00], Keys::Ctrl('3')),
+    ([0x34, 0x00, 0x00], Keys::Ctrl('4')),
+    ([0x35, 0x00, 0x00], Keys::Ctrl('5')),
+    ([0x36, 0x00, 0x00], Keys::Ctrl('6')),
+    ([0x37, 0x00, 0x00], Keys::Ctrl('7')),
+    ([0x38, 0x00, 0x00], Keys::Ctrl('8')),
+    ([0x39, 0x00, 0x00], Keys::Ctrl('9')),
+];
+
 #[cfg(any(feature = "alt_lower_letter", feature = "full"))]
 pub const ALT_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x61, 0x00], Keys::Alt('a')),
@@ -313,8 +333,22 @@ pub const ALT_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x5A, 0x00], Keys::Alt('Z')),
 ];
 
-#[cfg(any(feature = "alt_gr_letter", feature = "full"))]
-pub const ALT_GR_LETTER: [([u8; BYTES], Keys); 27] = [
+#[cfg(any(feature = "alt_numbers", feature = "full"))]
+pub const ALT_NUMBERS: [([u8; BYTES], Keys); 10] = [
+    (CTRL_NUMBERS[0].0, Keys::Alt('0')),
+    (CTRL_NUMBERS[1].0, Keys::Alt('1')),
+    (CTRL_NUMBERS[2].0, Keys::Alt('2')),
+    (CTRL_NUMBERS[3].0, Keys::Alt('3')),
+    (CTRL_NUMBERS[4].0, Keys::Alt('4')),
+    (CTRL_NUMBERS[5].0, Keys::Alt('5')),
+    (CTRL_NUMBERS[6].0, Keys::Alt('6')),
+    (CTRL_NUMBERS[7].0, Keys::Alt('7')),
+    (CTRL_NUMBERS[8].0, Keys::Alt('8')),
+    (CTRL_NUMBERS[9].0, Keys::Alt('9')),
+];
+
+#[cfg(any(feature = "alt_gr_lower_letter", feature = "full"))]
+pub const ALT_GR_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0xc3, 0xa6, 0x00], Keys::AltGr('a')),
     ([0xe2, 0x80, 0x9c], Keys::AltGr('b')),
     ([0xc2, 0xa2, 0x00], Keys::AltGr('c')),
@@ -342,4 +376,49 @@ pub const ALT_GR_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0xc2, 0xbb, 0x00], Keys::AltGr('x')),
     ([0xe2, 0x86, 0x90], Keys::AltGr('y')),
     ([0xc2, 0xab, 0x00], Keys::AltGr('z')),
+];
+
+#[cfg(any(feature = "alt_gr_upper_letter", feature = "full"))]
+pub const ALT_GR_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
+    ([0xc3, 0xa6, 0x00], Keys::AltGr('A')),
+    ([0xe2, 0x80, 0x9c], Keys::AltGr('b')),
+    ([0xc2, 0xa2, 0x00], Keys::AltGr('c')),
+    ([0xc3, 0xb0, 0x00], Keys::AltGr('d')),
+    ([0xe2, 0x82, 0xac], Keys::AltGr('e')),
+    ([0xc4, 0x91, 0x00], Keys::AltGr('f')),
+    ([0xc5, 0x8b, 0x00], Keys::AltGr('g')),
+    ([0xc4, 0xa7, 0x00], Keys::AltGr('h')),
+    ([0xe2, 0x86, 0x92], Keys::AltGr('i')),
+    ([0xcc, 0x89, 0x00], Keys::AltGr('j')),
+    ([0xc4, 0xb8, 0x00], Keys::AltGr('k')),
+    ([0xc5, 0x82, 0x00], Keys::AltGr('l')),
+    ([0xc2, 0xb5, 0x00], Keys::AltGr('m')),
+    ([0xe2, 0x80, 0x9d], Keys::AltGr('n')),
+    ([0x7e, 0x00, 0x00], Keys::AltGr('ñ')),
+    ([0xc3, 0xb8, 0x00], Keys::AltGr('o')),
+    ([0xc3, 0xbe, 0x00], Keys::AltGr('p')),
+    ([0x40, 0x00, 0x00], Keys::AltGr('q')),
+    ([0xc2, 0xb6, 0x00], Keys::AltGr('r')),
+    ([0xc3, 0x9f, 0x00], Keys::AltGr('s')),
+    ([0xc5, 0xa7, 0x00], Keys::AltGr('t')),
+    ([0xe2, 0x86, 0x93], Keys::AltGr('u')),
+    ([0xe2, 0x80, 0x9e], Keys::AltGr('v')),
+    ([0xc5, 0xbf, 0x00], Keys::AltGr('w')),
+    ([0xc2, 0xbb, 0x00], Keys::AltGr('x')),
+    ([0xe2, 0x86, 0x90], Keys::AltGr('y')),
+    ([0xc2, 0xab, 0x00], Keys::AltGr('z')),
+];
+
+#[cfg(any(feature = "alt_gr_numbers", feature = "full"))]
+pub const ALT_GR_NUMBERS: [([u8; BYTES], Keys); 10] = [
+    (CTRL_NUMBERS[0].0, Keys::AltGr('0')),
+    (CTRL_NUMBERS[1].0, Keys::AltGr('1')),
+    (CTRL_NUMBERS[2].0, Keys::AltGr('2')),
+    (CTRL_NUMBERS[3].0, Keys::AltGr('3')),
+    (CTRL_NUMBERS[4].0, Keys::AltGr('4')),
+    (CTRL_NUMBERS[5].0, Keys::AltGr('5')),
+    (CTRL_NUMBERS[6].0, Keys::AltGr('6')),
+    (CTRL_NUMBERS[7].0, Keys::AltGr('7')),
+    (CTRL_NUMBERS[8].0, Keys::AltGr('8')),
+    (CTRL_NUMBERS[9].0, Keys::AltGr('9')),
 ];

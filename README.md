@@ -34,7 +34,7 @@ pub enum Keys {
 
 ---
 
-## k_board by example
+## Examples
 
 <details>
 <summary>Arrows keys & enter for dynamic menus</summary>
@@ -77,7 +77,7 @@ fn menu(operation: u8) {
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["ctrl_lower_letter", "ctrl_upper_letter", "ctrl_standar", "lower_letter"] }
+k_board = { version = "1.2.2", features = ["ctrl_lower_letter", "ctrl_upper_letter", "lower_letter"] }
 ```
 
 ```rust
@@ -88,8 +88,6 @@ fn main() {
         match key {
             Keys::Ctrl('c') => copy_terminal(),
             Keys::Ctrl('s') => paste_into_terminal(),
-            Keys::Ctrl('-') => reduce_screen(),
-            Keys::Ctrl('+') => zoom_screen(),
             // remember upper & lower case in Ctrl + key is the same hex code
             Keys::Ctrl('a') => do_this(),
             Keys::Ctrl('A') => do_this(),
@@ -108,11 +106,307 @@ fn do_this() {}
 
 </details>
 
+<details>
+<summary>Get the F1, F2, F3 ...</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["f"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+
+fn main() {
+    for key in Keyboard::new() {
+        match key {
+            Keys::F(5) => update_screen(),
+            Keys::F(9) => full_screen(),
+            Keys::Enter => break,
+            _ => {}
+        }
+    }
+}
+
+fn update_screen() {}
+fn full_screen() {}
+```
+
+</details>
+
+<details>
+<summary>What number you press?</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["numbers"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+
+fn main() {
+    for key in Keyboard::new() {
+        match key {
+            Keys::Char('0') => break,
+            Keys::Char('1') => download(),
+            Keys::Char('2') => see_file(),
+            Keys::Char('3') => share(),
+            _ => {}
+        }
+    }
+}
+
+fn download() {}
+fn see_file() {}
+fn share() {}
+```
+
+</details>
+
+<details>
+<summary>Calculator</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["numbers"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+use std::io;
+
+fn main() {
+    let mut result: f64 = 0.0;
+    let first: f64 = 10.0;
+    let second: f64 = 5.69;
+    let operation: i8 = get_operation();
+    match operation {
+        0 => result = first + second,
+        1 => result = first - second,
+        2 => result = first * second,
+        3 => {
+            if second != 0.0 {
+                result = first / second
+            }
+        }
+        _ => {}
+    }
+    println!("The result is: {}", result);
+}
+
+
+fn get_operation() -> i8 {
+    let mut operation: i8 = 0;
+    menu(&mut operation, 0);
+    for key in Keyboard::new() {
+        match key {
+            Keys::Up => menu(&mut operation, -1),
+            Keys::Down => menu(&mut operation, 1),
+            Keys::Enter => break,
+            _ => {}
+        }
+    }
+    operation
+}
+
+fn menu(operation: &mut i8, selection: i8) {
+    std::process::Command::new("clear").status().unwrap();
+    if *operation > 0 || *operation < 3 {
+        *operation += selection;
+    }
+    let mut op = vec![' ', ' ', ' ', ' '];
+    for i in 0..4 {
+        if i == *operation {
+            op[i as usize] = '*';
+        }
+    }
+    println!(
+        "{} Add\n{} Subtract\n{} Multiply\n{} Divide",
+        op[0], op[1], op[2], op[3]
+    );
+}
+```
+
+</details>
+
+<details>
+<summary>ESC, simbols, etc</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["standar"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+
+fn main() {
+    for key in Keyboard::new() {
+        match key {
+            Keys::Escape => break,
+            Keys::Space => jump(),
+            Keys::Char('$') => money(),
+            Keys::Char('@') => email(),
+            _ => {}
+        }
+    }
+}
+
+fn jump() {}
+fn money() {}
+fn email() {}
+```
+
+</details>
+
+<details>
+<summary>Ctrl +  & Ctrl - for screen size</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["ctrl_standar"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+
+fn main() {
+    for key in Keyboard::new() {
+        match key {
+            Keys::Enter => break,
+            Keys::Ctrl('-') => less_zoom(),
+            Keys::Ctrl('+') => zoom(),
+            _ => {}
+        }
+    }
+}
+
+fn less_zoom() {}
+fn zoom() {}
+```
+
+</details>
+
+<details>
+<summary>Alt + key</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["alt_lower_letter", "alt_upper_letter"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+
+fn main() {
+    for key in Keyboard::new() {
+        match key {
+            Keys::Enter => break,
+            Keys::Alt('a') => shy(),
+            Keys::Alt('A') => angry(),
+            _ => {}
+        }
+    }
+}
+
+fn shy() {}
+fn angry() {}
+```
+
+</details>
+
+<details>
+<summary>Get lower & upper letters</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["lower_letter", "upper_letter"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+
+fn main() {
+    for key in Keyboard::new() {
+        match key {
+            Keys::Enter => break,
+            Keys::Char('b') => lower_case(),
+            Keys::Char('B') => upper_case(),
+            _ => {}
+        }
+    }
+}
+
+fn lower_case() {}
+fn upper_case() {}
+```
+
+</details>
+
+<details>
+<summary>Get Alt Gr + key</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["alt_gr_lower_letter", "alt_gr_upper_letter"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+
+fn main() {
+    for key in Keyboard::new() {
+        match key {
+            Keys::Enter => break,
+            Keys::AltGr('l') => f1(),
+            Keys::AltGr('L') => f2(),
+            _ => {}
+        }
+    }
+}
+
+fn f1() {}
+fn f2() {}
+```
+
+</details>
+
+<details>
+<summary>Ctrl, Alt & Alr Gr + number</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["ctrl_numbers", "alt_numbers", "alt_gr_numbers"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+
+fn main() {
+    for key in Keyboard::new() {
+        match key {
+            Keys::Enter => break,
+            Keys::Ctrl('0') => execute(),
+            Keys::Alt('1') => read(),
+            Keys::AltGr('2') => write(),
+            _ => {}
+        }
+    }
+}
+
+fn execute() {}
+fn read() {}
+fn write() {}
+```
+
+</details>
+
 ---
 
 ## Contributing 
 
-Feel free to contribute to the repository.Run the bash command below to make all ci/cd actions successful. Below, a fragment that allows you to visualize in hexadecimal the key or the event executed on your keyboard.
+Feel free to contribute to the repository. Run the bash command below to make all ci/cd actions successful. Below, a fragment that allows you to visualize in hexadecimal the key or the event executed on your keyboard.
 
 ```bash
 clear && 
@@ -215,9 +509,13 @@ Results:
 - termion: 19 MB
 - crossterm: 45 MB
 
-### Space used by crate in a normal hello world!
+<div align="center">
 
-![space](readme/space.svg)
+### Space used by crate in a normal hello world! (MB)
+
+![space](https://private-user-images.githubusercontent.com/98977436/293250921-5c5546f8-9cf9-4ebb-b97f-af5a0882fa4b.svg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE3MDM3ODU0NDgsIm5iZiI6MTcwMzc4NTE0OCwicGF0aCI6Ii85ODk3NzQzNi8yOTMyNTA5MjEtNWM1NTQ2ZjgtOWNmOS00ZWJiLWI5N2YtYWY1YTA4ODJmYTRiLnN2Zz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFJV05KWUFYNENTVkVINTNBJTJGMjAyMzEyMjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjMxMjI4VDE3MzkwOFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWQzYzRlNDZjYTU1ZjNiYmQ4N2MzM2Q4YmVhZWU4Yzc0M2U5OWZmNzVkOTlkOThlMmViY2Y5NGMyZGM2OTA4ZGQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.IJ5sr2A5GLr_FApmtlQKaaRPoTTEzd7gxdU8zLDoqVU)
+
+</div>
 
 </details>
 
@@ -246,11 +544,12 @@ pub const ARROWS_ENTER: [([u8; BYTES], Keys); 5] = [
 <summary>standar</summary>
 
 ```rust
-pub const STANDAR: [([u8; BYTES], Keys); 39] = [
+pub const STANDAR: [([u8; BYTES], Keys); 40] = [
     ([0x1B, 0x5B, 0x48], Keys::Home),
     ([0x09, 0x00, 0x00], Keys::Tab),
     ([0x1B, 0x5B, 0x46], Keys::End),
     ([0x1B, 0x5B, 0x5a], Keys::Backtab),
+    ([0x1b, 0x00, 0x00], Keys::Escape),
     ([0x20, 0x00, 0x00], Keys::Space),
     ([0x7F, 0x00, 0x00], Keys::Delete),
     ([0x2b, 0x00, 0x00], Keys::Char('+')),
@@ -486,6 +785,26 @@ pub const CTRL_STANDAR: [([u8; BYTES], Keys); 2] = [
 
 </details>
 
+<details>
+<summary>ctrl_numbers</summary>
+
+```rust
+pub const CTRL_NUMBERS: [([u8; BYTES], Keys); 10] = [
+    ([0x30, 0x00, 0x00], Keys::Ctrl('0')),
+    ([0x31, 0x00, 0x00], Keys::Ctrl('1')),
+    ([0x32, 0x00, 0x00], Keys::Ctrl('2')),
+    ([0x33, 0x00, 0x00], Keys::Ctrl('3')),
+    ([0x34, 0x00, 0x00], Keys::Ctrl('4')),
+    ([0x35, 0x00, 0x00], Keys::Ctrl('5')),
+    ([0x36, 0x00, 0x00], Keys::Ctrl('6')),
+    ([0x37, 0x00, 0x00], Keys::Ctrl('7')),
+    ([0x38, 0x00, 0x00], Keys::Ctrl('8')),
+    ([0x39, 0x00, 0x00], Keys::Ctrl('9')),
+];
+```
+
+</details>
+
 
 <details>
 <summary>alt_lower_letter</summary>
@@ -561,6 +880,28 @@ pub const ALT_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
 </details>
 
 <details>
+<summary>alt_numbers</summary>
+
+* remember Alt + number is the same hex code as Ctrl + number. 
+
+```rust
+pub const ALT_NUMBERS: [([u8; BYTES], Keys); 10] = [
+    (CTRL_NUMBERS[0].0, Keys::Alt('0')),
+    (CTRL_NUMBERS[1].0, Keys::Alt('1')),
+    (CTRL_NUMBERS[2].0, Keys::Alt('2')),
+    (CTRL_NUMBERS[3].0, Keys::Alt('3')),
+    (CTRL_NUMBERS[4].0, Keys::Alt('4')),
+    (CTRL_NUMBERS[5].0, Keys::Alt('5')),
+    (CTRL_NUMBERS[6].0, Keys::Alt('6')),
+    (CTRL_NUMBERS[7].0, Keys::Alt('7')),
+    (CTRL_NUMBERS[8].0, Keys::Alt('8')),
+    (CTRL_NUMBERS[9].0, Keys::Alt('9')),
+];
+```
+
+</details>
+
+<details>
 <summary>alt_gr_letter</summary>
 
 ```rust
@@ -592,6 +933,28 @@ pub const ALT_GR_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0xc2, 0xbb, 0x00], Keys::AltGr('x')),
     ([0xe2, 0x86, 0x90], Keys::AltGr('y')),
     ([0xc2, 0xab, 0x00], Keys::AltGr('z')),
+];
+```
+
+</details>
+
+<details>
+<summary>alt_gr_numbers</summary>
+
+* remember Alt Gr + number is the same hex code as Ctrl + number. 
+
+```rust
+pub const ALT_GR_NUMBERS: [([u8; BYTES], Keys); 10] = [
+    (CTRL_NUMBERS[0].0, Keys::Alt('0')),
+    (CTRL_NUMBERS[1].0, Keys::Alt('1')),
+    (CTRL_NUMBERS[2].0, Keys::Alt('2')),
+    (CTRL_NUMBERS[3].0, Keys::Alt('3')),
+    (CTRL_NUMBERS[4].0, Keys::Alt('4')),
+    (CTRL_NUMBERS[5].0, Keys::Alt('5')),
+    (CTRL_NUMBERS[6].0, Keys::Alt('6')),
+    (CTRL_NUMBERS[7].0, Keys::Alt('7')),
+    (CTRL_NUMBERS[8].0, Keys::Alt('8')),
+    (CTRL_NUMBERS[9].0, Keys::Alt('9')),
 ];
 ```
 
