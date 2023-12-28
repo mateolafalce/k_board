@@ -1,6 +1,6 @@
 [package]
 name = "k_board"
-version = "1.2.1"
+version = "1.2.2"
 edition = "2021"
 license = "GPL-3.0"
 authors = ["Mateo Lafalce <mateolafalce@protonmail.com>"]
@@ -20,6 +20,8 @@ lower_letter = []
 upper_letter = []
 f = []
 ctrl_lower_letter = []
+ctrl_upper_letter = []
+ctrl_standar = []
 alt_lower_letter = []
 alt_upper_letter = []
 alt_gr_letter = []

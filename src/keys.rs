@@ -1,3 +1,23 @@
+/***************************************************************************************
+ *   keys.rs  --  This file is part of k_board.                                        *
+ *                                                                                     *
+ *   Copyright (C) 2023 Mateo Lafalce                                                  *
+ *                                                                                     *
+ *   k_board is free software: you can redistribute it and/or modify                   *
+ *   it under the terms of the GNU General Public License as published                 *
+ *   by the Free Software Foundation, either version 3 of the License,                 *
+ *   or (at your option) any later version.                                            *
+ *                                                                                     *
+ *   k_board is distributed in the hope that it will be useful,                        *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty                       *
+ *   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                           *
+ *   See the GNU General Public License for more details.                              *
+ *                                                                                     *
+ *   You should have received a copy of the GNU General Public License                 *
+ *   along with this program.  If not, see http://www.gnu.org/licenses/.               *
+ *                                                                                     *
+ **************************************************************************************/
+
 pub const BYTES: usize = 3;
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -30,6 +50,7 @@ pub const ARROWS_ENTER: [([u8; BYTES], Keys); 5] = [
     ([0x0A, 0x00, 0x00], Keys::Enter),
 ];
 
+#[cfg(any(feature = "standar", feature = "full"))]
 pub const STANDAR: [([u8; BYTES], Keys); 39] = [
     ([0x1B, 0x5B, 0x48], Keys::Home),
     ([0x09, 0x00, 0x00], Keys::Tab),
@@ -72,6 +93,7 @@ pub const STANDAR: [([u8; BYTES], Keys); 39] = [
     ([0xc2, 0xb4, 0x00], Keys::Char('´')),
 ];
 
+#[cfg(any(feature = "numbers", feature = "full"))]
 pub const NUMBERS: [([u8; BYTES], Keys); 10] = [
     ([0x30, 0x00, 0x00], Keys::Char('0')),
     ([0x31, 0x00, 0x00], Keys::Char('1')),
@@ -85,6 +107,7 @@ pub const NUMBERS: [([u8; BYTES], Keys); 10] = [
     ([0x39, 0x00, 0x00], Keys::Char('9')),
 ];
 
+#[cfg(any(feature = "lower_letter", feature = "full"))]
 pub const LOWER_LETTERS: [([u8; BYTES], Keys); 27] = [
     ([0x61, 0x00, 0x00], Keys::Char('a')),
     ([0x62, 0x00, 0x00], Keys::Char('b')),
@@ -115,6 +138,7 @@ pub const LOWER_LETTERS: [([u8; BYTES], Keys); 27] = [
     ([0x7A, 0x00, 0x00], Keys::Char('z')),
 ];
 
+#[cfg(any(feature = "upper_letter", feature = "full"))]
 pub const UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x41, 0x00, 0x00], Keys::Char('A')),
     ([0x42, 0x00, 0x00], Keys::Char('B')),
@@ -145,6 +169,7 @@ pub const UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x5A, 0x00, 0x00], Keys::Char('Z')),
 ];
 
+#[cfg(any(feature = "f", feature = "full"))]
 pub const F: [([u8; BYTES], Keys); 12] = [
     ([0x1b, 0x4f, 0x50], Keys::F(1)),
     ([0x1b, 0x4f, 0x51], Keys::F(2)),
@@ -160,6 +185,11 @@ pub const F: [([u8; BYTES], Keys); 12] = [
     ([0x34, 0x7E, 0x00], Keys::F(12)),
 ];
 
+#[cfg(any(
+    feature = "ctrl_lower_letter",
+    feature = "ctrl_upper_letter",
+    feature = "full"
+))]
 pub const CTRL_LOWER_LETTER: [([u8; BYTES], Keys); 24] = [
     ([0x01, 0x00, 0x00], Keys::Ctrl('a')),
     ([0x02, 0x00, 0x00], Keys::Ctrl('b')),
@@ -187,6 +217,41 @@ pub const CTRL_LOWER_LETTER: [([u8; BYTES], Keys); 24] = [
     ([0x1A, 0x00, 0x00], Keys::Ctrl('z')),
 ];
 
+#[cfg(any(feature = "ctrl_upper_letter", feature = "full"))]
+pub const CTRL_UPPER_LETTER: [([u8; BYTES], Keys); 24] = [
+    (CTRL_LOWER_LETTER[0].0, Keys::Ctrl('A')),
+    (CTRL_LOWER_LETTER[1].0, Keys::Ctrl('B')),
+    (CTRL_LOWER_LETTER[2].0, Keys::Ctrl('C')),
+    (CTRL_LOWER_LETTER[3].0, Keys::Ctrl('D')),
+    (CTRL_LOWER_LETTER[4].0, Keys::Ctrl('E')),
+    (CTRL_LOWER_LETTER[5].0, Keys::Ctrl('F')),
+    (CTRL_LOWER_LETTER[6].0, Keys::Ctrl('G')),
+    (CTRL_LOWER_LETTER[7].0, Keys::Ctrl('H')),
+    (CTRL_LOWER_LETTER[8].0, Keys::Ctrl('K')),
+    (CTRL_LOWER_LETTER[9].0, Keys::Ctrl('L')),
+    (CTRL_LOWER_LETTER[10].0, Keys::Ctrl('M')),
+    (CTRL_LOWER_LETTER[11].0, Keys::Ctrl('N')),
+    (CTRL_LOWER_LETTER[12].0, Keys::Ctrl('O')),
+    (CTRL_LOWER_LETTER[13].0, Keys::Ctrl('P')),
+    (CTRL_LOWER_LETTER[14].0, Keys::Ctrl('Q')),
+    (CTRL_LOWER_LETTER[15].0, Keys::Ctrl('R')),
+    (CTRL_LOWER_LETTER[16].0, Keys::Ctrl('S')),
+    (CTRL_LOWER_LETTER[17].0, Keys::Ctrl('T')),
+    (CTRL_LOWER_LETTER[18].0, Keys::Ctrl('U')),
+    (CTRL_LOWER_LETTER[19].0, Keys::Ctrl('V')),
+    (CTRL_LOWER_LETTER[20].0, Keys::Ctrl('W')),
+    (CTRL_LOWER_LETTER[21].0, Keys::Ctrl('X')),
+    (CTRL_LOWER_LETTER[22].0, Keys::Ctrl('Y')),
+    (CTRL_LOWER_LETTER[23].0, Keys::Ctrl('Z')),
+];
+
+#[cfg(any(feature = "ctrl_standar", feature = "full"))]
+pub const CTRL_STANDAR: [([u8; BYTES], Keys); 2] = [
+    ([0x2b, 0x00, 0x00], Keys::Ctrl('+')),
+    ([0x1f, 0x00, 0x00], Keys::Ctrl('-')),
+];
+
+#[cfg(any(feature = "alt_lower_letter", feature = "full"))]
 pub const ALT_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x61, 0x00], Keys::Alt('a')),
     ([0x1b, 0x62, 0x00], Keys::Alt('b')),
@@ -217,6 +282,7 @@ pub const ALT_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x7a, 0x00], Keys::Alt('z')),
 ];
 
+#[cfg(any(feature = "alt_upper_letter", feature = "full"))]
 pub const ALT_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x41, 0x00], Keys::Alt('A')),
     ([0x1b, 0x42, 0x00], Keys::Alt('B')),
@@ -247,6 +313,7 @@ pub const ALT_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x5A, 0x00], Keys::Alt('Z')),
 ];
 
+#[cfg(any(feature = "alt_gr_letter", feature = "full"))]
 pub const ALT_GR_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0xc3, 0xa6, 0x00], Keys::AltGr('a')),
     ([0xe2, 0x80, 0x9c], Keys::AltGr('b')),

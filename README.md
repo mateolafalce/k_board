@@ -32,7 +32,14 @@ pub enum Keys {
 }
 ```
 
-## Example
+---
+
+## k_board by example
+
+<details>
+<summary>Arrows keys & enter for dynamic menus</summary>
+
+Simply `cargo add k_board`. No features.
 
 ```rust
 use k_board::{keyboard::Keyboard, keys::Keys};
@@ -63,9 +70,67 @@ fn menu(operation: u8) {
 }
 ```
 
+</details>
+
+<details>
+<summary>Ctrl + key, for standar cli events</summary>
+
+```toml
+[dependencies]
+k_board = { version = "1.2.2", features = ["ctrl_lower_letter", "ctrl_upper_letter", "ctrl_standar", "lower_letter"] }
+```
+
+```rust
+use k_board::{keyboard::Keyboard, keys::Keys};
+
+fn main() {
+    for key in Keyboard::new() {
+        match key {
+            Keys::Ctrl('c') => copy_terminal(),
+            Keys::Ctrl('s') => paste_into_terminal(),
+            Keys::Ctrl('-') => reduce_screen(),
+            Keys::Ctrl('+') => zoom_screen(),
+            // remember upper & lower case in Ctrl + key is the same hex code
+            Keys::Ctrl('a') => do_this(),
+            Keys::Ctrl('A') => do_this(),
+            Keys::Char('q') => break,
+            _ => (),
+        }
+    }
+}
+
+fn copy_terminal() {}
+fn paste_into_terminal() {}
+fn reduce_screen() {}
+fn zoom_screen() {}
+fn do_this() {}
+```
+
+</details>
+
+---
+
 ## Contributing 
 
-Feel free to contribute to the repository. Make each modification to the code formatted with code before with `cargo fmt` && `cargo clippy`. Below, a fragment that allows you to visualize in hexadecimal the key or the event executed on your keyboard:
+Feel free to contribute to the repository.Run the bash command below to make all ci/cd actions successful. Below, a fragment that allows you to visualize in hexadecimal the key or the event executed on your keyboard.
+
+```bash
+clear && 
+cargo fmt &&
+cargo clippy &&
+cargo build --features standar && 
+cargo build --features numbers &&
+cargo build --features lower_letter &&
+cargo build --features upper_letter &&
+cargo build --features f &&
+cargo build --features ctrl_lower_letter &&
+cargo build --features ctrl_upper_letter &&
+cargo build --features ctrl_standar &&
+cargo build --features alt_lower_letter &&
+cargo build --features alt_upper_letter &&
+cargo build --features alt_gr_letter &&
+cargo build --features full
+```
 
 ```rust
 use k_board::termio::{restore_termios, setup_raw_mode, termios};
@@ -96,21 +161,71 @@ pub fn get_key() -> std::io::Result<()> {
 }
 ```
 
+---
+
+## Why k_board?
+
+k_board, is designed for low-level development (direct interaction with the OS), boasts high and efficient performance compared to other libraries dedicated to keyboard interaction. This is demonstrated by performance tests conducted and that you can also perform to verify the technical superiority of this crate.
+
+This has allowed k_board to be **441.86%** and **1046.51%** lighter than keyboard handling libraries without sacrificing quality and adding in-depth control to the developer over which part of the keyboard to manage and which not to.
+
+<details>
+<summary>Space test</summary>
+
+last versions of all crates to date.
+
+k_board(1.2.2) vs termion(2.0.3) vs crossterm(0.27.0)
+
+```bash
+# for k_board
+
+cargo new k_board_ &&
+cd k_board_/ &&
+cargo add k_board &&
+cargo build && 
+cd .. && 
+du k_board_/ -h &&
+rm -rf k_board_
+
+# for termion
+
+cargo new termion_ &&
+cd termion_/ &&
+cargo add termion &&
+cargo build && 
+cd .. && 
+du termion_/ -h &&
+rm -rf termion_
+
+# for crossterm
+
+cargo new crossterm_ &&
+cd crossterm_/ &&
+cargo add crossterm &&
+cargo build && 
+cd .. && 
+du crossterm_/ -h &&
+rm -rf crossterm_
+
+```
+
+Results: 
+
+- k_board: 4,3 MB 
+- termion: 19 MB
+- crossterm: 45 MB
+
+### Space used by crate in a normal hello world!
+
+![space](readme/space.svg)
+
+</details>
+
+---
+
 ## Features
 
 The library has different features depending on the developer's needs.
-
-- no-feature(default)
-- standar
-- numbers 
-- lower_letter 
-- upper_letter 
-- f 
-- ctrl_lower_letter 
-- alt_lower_letter
-- alt_upper_letter
-- alt_gr_lower_letter
-- full 
 
 <details>
 <summary>no-feature(default)</summary>
@@ -324,6 +439,55 @@ pub const CTRL_LOWER_LETTER: [([u8; BYTES], Keys); 24] = [
 </details>
 
 <details>
+<summary>ctrl_upper_letter</summary>
+
+* remember upper & lower case in Ctrl + key is the same hex code. 
+
+```rust
+pub const CTRL_UPPER_LETTER: [([u8; BYTES], Keys); 24] = [
+    (CTRL_LOWER_LETTER[0].0, Keys::Ctrl('A')),
+    (CTRL_LOWER_LETTER[1].0, Keys::Ctrl('B')),
+    (CTRL_LOWER_LETTER[2].0, Keys::Ctrl('C')),
+    (CTRL_LOWER_LETTER[3].0, Keys::Ctrl('D')),
+    (CTRL_LOWER_LETTER[4].0, Keys::Ctrl('E')),
+    (CTRL_LOWER_LETTER[5].0, Keys::Ctrl('F')),
+    (CTRL_LOWER_LETTER[6].0, Keys::Ctrl('G')),
+    (CTRL_LOWER_LETTER[7].0, Keys::Ctrl('H')),
+    (CTRL_LOWER_LETTER[8].0, Keys::Ctrl('K')),
+    (CTRL_LOWER_LETTER[9].0, Keys::Ctrl('L')),
+    (CTRL_LOWER_LETTER[10].0, Keys::Ctrl('M')),
+    (CTRL_LOWER_LETTER[11].0, Keys::Ctrl('N')),
+    (CTRL_LOWER_LETTER[12].0, Keys::Ctrl('O')),
+    (CTRL_LOWER_LETTER[13].0, Keys::Ctrl('P')),
+    (CTRL_LOWER_LETTER[14].0, Keys::Ctrl('Q')),
+    (CTRL_LOWER_LETTER[15].0, Keys::Ctrl('R')),
+    (CTRL_LOWER_LETTER[16].0, Keys::Ctrl('S')),
+    (CTRL_LOWER_LETTER[17].0, Keys::Ctrl('T')),
+    (CTRL_LOWER_LETTER[18].0, Keys::Ctrl('U')),
+    (CTRL_LOWER_LETTER[19].0, Keys::Ctrl('V')),
+    (CTRL_LOWER_LETTER[20].0, Keys::Ctrl('W')),
+    (CTRL_LOWER_LETTER[21].0, Keys::Ctrl('X')),
+    (CTRL_LOWER_LETTER[22].0, Keys::Ctrl('Y')),
+    (CTRL_LOWER_LETTER[23].0, Keys::Ctrl('Z')),
+];
+```
+
+</details>
+
+<details>
+<summary>ctrl_standar</summary>
+
+```rust
+pub const CTRL_STANDAR: [([u8; BYTES], Keys); 2] = [
+    ([0x2b, 0x00, 0x00], Keys::Ctrl('+')),
+    ([0x1f, 0x00, 0x00], Keys::Ctrl('-')),
+];
+```
+
+</details>
+
+
+<details>
 <summary>alt_lower_letter</summary>
 
 ```rust
@@ -394,6 +558,7 @@ pub const ALT_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x5A, 0x00], Keys::Alt('Z')),
 ];
 ```
+</details>
 
 <details>
 <summary>alt_gr_letter</summary>
@@ -431,7 +596,6 @@ pub const ALT_GR_LETTER: [([u8; BYTES], Keys); 27] = [
 ```
 
 </details>
-
 
 </details>
 
