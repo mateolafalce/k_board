@@ -1,7 +1,7 @@
 /***************************************************************************************
  *   keys.rs  --  This file is part of k_board.                                        *
  *                                                                                     *
- *   Copyright (C) 2023 Mateo Lafalce                                                  *
+ *   Copyright (C) 2024 Mateo Lafalce                                                  *
  *                                                                                     *
  *   k_board is free software: you can redistribute it and/or modify                   *
  *   it under the terms of the GNU General Public License as published                 *
@@ -18,8 +18,10 @@
  *                                                                                     *
  **************************************************************************************/
 
+/// Bytes taken to look what key is pressed
 pub const BYTES: usize = 3;
 
+/// Keys enum
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum Keys {
     Up,
@@ -42,6 +44,7 @@ pub enum Keys {
     Null,
 }
 
+/// Default keys
 pub const ARROWS_ENTER: [([u8; BYTES], Keys); 5] = [
     ([0x1B, 0x5B, 0x41], Keys::Up),
     ([0x1B, 0x5B, 0x42], Keys::Down),
@@ -50,6 +53,7 @@ pub const ARROWS_ENTER: [([u8; BYTES], Keys); 5] = [
     ([0x0A, 0x00, 0x00], Keys::Enter),
 ];
 
+/// All special character keys
 #[cfg(any(feature = "standar", feature = "full"))]
 pub const STANDAR: [([u8; BYTES], Keys); 40] = [
     ([0x1B, 0x5B, 0x48], Keys::Home),
@@ -94,6 +98,7 @@ pub const STANDAR: [([u8; BYTES], Keys); 40] = [
     ([0xc2, 0xb4, 0x00], Keys::Char('´')),
 ];
 
+/// Decimal numbers
 #[cfg(any(feature = "numbers", feature = "full"))]
 pub const NUMBERS: [([u8; BYTES], Keys); 10] = [
     ([0x30, 0x00, 0x00], Keys::Char('0')),
@@ -108,6 +113,7 @@ pub const NUMBERS: [([u8; BYTES], Keys); 10] = [
     ([0x39, 0x00, 0x00], Keys::Char('9')),
 ];
 
+/// Lower letters
 #[cfg(any(feature = "lower_letter", feature = "full"))]
 pub const LOWER_LETTERS: [([u8; BYTES], Keys); 27] = [
     ([0x61, 0x00, 0x00], Keys::Char('a')),
@@ -139,6 +145,7 @@ pub const LOWER_LETTERS: [([u8; BYTES], Keys); 27] = [
     ([0x7A, 0x00, 0x00], Keys::Char('z')),
 ];
 
+/// Upper letters
 #[cfg(any(feature = "upper_letter", feature = "full"))]
 pub const UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x41, 0x00, 0x00], Keys::Char('A')),
@@ -170,6 +177,7 @@ pub const UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x5A, 0x00, 0x00], Keys::Char('Z')),
 ];
 
+/// F1, F2..F12
 #[cfg(any(feature = "f", feature = "full"))]
 pub const F: [([u8; BYTES], Keys); 12] = [
     ([0x1b, 0x4f, 0x50], Keys::F(1)),
@@ -186,6 +194,7 @@ pub const F: [([u8; BYTES], Keys); 12] = [
     ([0x34, 0x7E, 0x00], Keys::F(12)),
 ];
 
+/// Ctrl + lower letter
 #[cfg(any(
     feature = "ctrl_lower_letter",
     feature = "ctrl_upper_letter",
@@ -218,6 +227,7 @@ pub const CTRL_LOWER_LETTER: [([u8; BYTES], Keys); 24] = [
     ([0x1A, 0x00, 0x00], Keys::Ctrl('z')),
 ];
 
+/// Ctrl + upper letter
 #[cfg(any(feature = "ctrl_upper_letter", feature = "full"))]
 pub const CTRL_UPPER_LETTER: [([u8; BYTES], Keys); 24] = [
     (CTRL_LOWER_LETTER[0].0, Keys::Ctrl('A')),
@@ -246,12 +256,16 @@ pub const CTRL_UPPER_LETTER: [([u8; BYTES], Keys); 24] = [
     (CTRL_LOWER_LETTER[23].0, Keys::Ctrl('Z')),
 ];
 
-#[cfg(any(feature = "ctrl_standar", feature = "full"))]
+/// The Char('+') make a colision with Ctrl('+'),
+/// so if you need the standar feature, know that is the same hex code
+#[cfg(any(feature = "ctrl_standar", feature = "full",))]
+#[cfg(not(feature = "standar"))]
 pub const CTRL_STANDAR: [([u8; BYTES], Keys); 2] = [
     ([0x2b, 0x00, 0x00], Keys::Ctrl('+')),
     ([0x1f, 0x00, 0x00], Keys::Ctrl('-')),
 ];
 
+/// Ctrl + numbers
 #[cfg(any(
     feature = "ctrl_numbers",
     feature = "alt_numbers",
@@ -271,6 +285,7 @@ pub const CTRL_NUMBERS: [([u8; BYTES], Keys); 10] = [
     ([0x39, 0x00, 0x00], Keys::Ctrl('9')),
 ];
 
+/// Alt + lower letter
 #[cfg(any(feature = "alt_lower_letter", feature = "full"))]
 pub const ALT_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x61, 0x00], Keys::Alt('a')),
@@ -302,6 +317,7 @@ pub const ALT_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x7a, 0x00], Keys::Alt('z')),
 ];
 
+/// Alt + upper letter
 #[cfg(any(feature = "alt_upper_letter", feature = "full"))]
 pub const ALT_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x41, 0x00], Keys::Alt('A')),
@@ -333,6 +349,7 @@ pub const ALT_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0x1b, 0x5A, 0x00], Keys::Alt('Z')),
 ];
 
+/// Alt + numbers
 #[cfg(any(feature = "alt_numbers", feature = "full"))]
 pub const ALT_NUMBERS: [([u8; BYTES], Keys); 10] = [
     (CTRL_NUMBERS[0].0, Keys::Alt('0')),
@@ -347,6 +364,7 @@ pub const ALT_NUMBERS: [([u8; BYTES], Keys); 10] = [
     (CTRL_NUMBERS[9].0, Keys::Alt('9')),
 ];
 
+/// Alt Gr + lower letters
 #[cfg(any(feature = "alt_gr_lower_letter", feature = "full"))]
 pub const ALT_GR_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0xc3, 0xa6, 0x00], Keys::AltGr('a')),
@@ -378,6 +396,7 @@ pub const ALT_GR_LOWER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0xc2, 0xab, 0x00], Keys::AltGr('z')),
 ];
 
+/// Alt Gr + upper letters
 #[cfg(any(feature = "alt_gr_upper_letter", feature = "full"))]
 pub const ALT_GR_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0xc3, 0xa6, 0x00], Keys::AltGr('A')),
@@ -409,6 +428,7 @@ pub const ALT_GR_UPPER_LETTER: [([u8; BYTES], Keys); 27] = [
     ([0xc2, 0xab, 0x00], Keys::AltGr('z')),
 ];
 
+/// Alt Gr + numbers
 #[cfg(any(feature = "alt_gr_numbers", feature = "full"))]
 pub const ALT_GR_NUMBERS: [([u8; BYTES], Keys); 10] = [
     (CTRL_NUMBERS[0].0, Keys::AltGr('0')),

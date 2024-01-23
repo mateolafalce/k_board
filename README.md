@@ -412,22 +412,7 @@ Feel free to contribute to the repository. Run the bash command below to make al
 clear && 
 cargo fmt &&
 cargo clippy &&
-cargo build --features standar && 
-cargo build --features numbers &&
-cargo build --features lower_letter &&
-cargo build --features upper_letter &&
-cargo build --features f &&
-cargo build --features ctrl_lower_letter &&
-cargo build --features ctrl_upper_letter &&
-cargo build --features ctrl_standar &&
-cargo build --features ctrl_numbers &&
-cargo build --features alt_lower_letter &&
-cargo build --features alt_upper_letter &&
-cargo build --features alt_numbers &&
-cargo build --features alt_gr_lower_letter &&
-cargo build --features alt_gr_upper_letter &&
-cargo build --features alt_gr_numbers &&
-cargo build --features full
+cargo build --all-features
 ```
 
 ```rust

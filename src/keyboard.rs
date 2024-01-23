@@ -1,7 +1,7 @@
 /***************************************************************************************
  *   keyboard.rs  --  This file is part of k_board.                                    *
  *                                                                                     *
- *   Copyright (C) 2023 Mateo Lafalce                                                  *
+ *   Copyright (C) 2024 Mateo Lafalce                                                  *
  *                                                                                     *
  *   k_board is free software: you can redistribute it and/or modify                   *
  *   it under the terms of the GNU General Public License as published                 *
@@ -18,8 +18,67 @@
  *                                                                                     *
  **************************************************************************************/
 
-use crate::{get_key_from_keyboard, Keys};
+use crate::{
+    keys::{Keys, ARROWS_ENTER, BYTES},
+    termio::{restore, setup_raw_mode, termios},
+};
+use std::io::{stdin, stdout, Read, Write};
 
+#[cfg(any(feature = "alt_gr_lower_letter", feature = "full"))]
+use crate::keys::ALT_GR_LOWER_LETTER;
+#[cfg(any(feature = "alt_gr_numbers", feature = "full"))]
+use crate::keys::ALT_GR_NUMBERS;
+#[cfg(any(feature = "alt_gr_upper_letter", feature = "full"))]
+use crate::keys::ALT_GR_UPPER_LETTER;
+#[cfg(any(feature = "alt_lower_letter", feature = "full"))]
+use crate::keys::ALT_LOWER_LETTER;
+#[cfg(any(feature = "alt_numbers", feature = "full"))]
+use crate::keys::ALT_NUMBERS;
+#[cfg(any(feature = "alt_upper_letter", feature = "full"))]
+use crate::keys::ALT_UPPER_LETTER;
+#[cfg(any(feature = "ctrl_lower_letter", feature = "full"))]
+use crate::keys::CTRL_LOWER_LETTER;
+#[cfg(any(feature = "ctrl_numbers", feature = "full"))]
+use crate::keys::CTRL_NUMBERS;
+#[cfg(any(feature = "ctrl_standar", feature = "full",))]
+#[cfg(not(feature = "standar"))]
+use crate::keys::CTRL_STANDAR;
+#[cfg(any(feature = "ctrl_upper_letter", feature = "full"))]
+use crate::keys::CTRL_UPPER_LETTER;
+#[cfg(any(feature = "f", feature = "full"))]
+use crate::keys::F;
+#[cfg(any(feature = "lower_letter", feature = "full"))]
+use crate::keys::LOWER_LETTERS;
+#[cfg(any(feature = "numbers", feature = "full"))]
+use crate::keys::NUMBERS;
+#[cfg(any(feature = "standar", feature = "full"))]
+use crate::keys::STANDAR;
+#[cfg(any(feature = "upper_letter", feature = "full"))]
+use crate::keys::UPPER_LETTER;
+
+#[cfg(any(
+    feature = "ctrl_lower_letter",
+    feature = "ctrl_upper_letter",
+    feature = "full"
+))]
+use crate::termio::{sig_handler, signal, SIGINT};
+
+#[cfg(any(
+    feature = "ctrl_lower_letter",
+    feature = "ctrl_upper_letter",
+    feature = "full"
+))]
+use std::sync::Mutex;
+
+/// Global varible to get the CTRL+C event
+#[cfg(any(
+    feature = "ctrl_lower_letter",
+    feature = "ctrl_upper_letter",
+    feature = "full"
+))]
+pub static CTRL_C: Mutex<bool> = Mutex::new(false);
+
+/// Keyboard struct
 pub struct Keyboard;
 
 impl Default for Keyboard {
@@ -29,9 +88,11 @@ impl Default for Keyboard {
 }
 
 impl Keyboard {
+    /// Get a Keyboard instance
     pub fn new() -> Self {
         Keyboard
     }
+    /// Read the key is pressed
     pub fn read_key(&mut self) -> Keys {
         get_key_from_keyboard()
     }
@@ -42,4 +103,179 @@ impl Iterator for Keyboard {
     fn next(&mut self) -> Option<Self::Item> {
         Some(self.read_key())
     }
+}
+
+/// Get the key press from the keyboard looking the
+/// hex data in the I/O termios
+pub fn get_key_from_keyboard() -> Keys {
+    #[cfg(any(
+        feature = "ctrl_lower_letter",
+        feature = "ctrl_upper_letter",
+        feature = "full"
+    ))]
+    unsafe {
+        signal(SIGINT, sig_handler as usize)
+    };
+
+    let termios_enviroment: termios = setup_raw_mode().unwrap();
+    stdout().flush().unwrap();
+    let mut buffer: [u8; BYTES] = [0; BYTES];
+    let mut key: Keys = Keys::Null;
+    match stdin().read(&mut buffer) {
+        Ok(_) => (),
+        Err(err) => eprintln!("Error: {}", err),
+    }
+
+    for &(ref pattern, keys) in ARROWS_ENTER.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "standar", feature = "full"))]
+    for &(ref pattern, keys) in STANDAR.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "numbers", feature = "full"))]
+    for &(ref pattern, keys) in NUMBERS.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "lower_letter", feature = "full"))]
+    for &(ref pattern, keys) in LOWER_LETTERS.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "upper_letter", feature = "full"))]
+    for &(ref pattern, keys) in UPPER_LETTER.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "f", feature = "full"))]
+    for &(ref pattern, keys) in F.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "ctrl_lower_letter", feature = "full"))]
+    for &(ref pattern, keys) in CTRL_LOWER_LETTER.iter() {
+        let mut ctrl_c_handler = CTRL_C.lock().unwrap();
+        if *ctrl_c_handler {
+            *ctrl_c_handler = false;
+            restore(&termios_enviroment).expect("Error with termios restore");
+            return Keys::Ctrl('c');
+        }
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "ctrl_upper_letter", feature = "full"))]
+    for &(ref pattern, keys) in CTRL_UPPER_LETTER.iter() {
+        let mut ctrl_c_handler = CTRL_C.lock().unwrap();
+        if *ctrl_c_handler {
+            *ctrl_c_handler = false;
+            restore(&termios_enviroment).expect("Error with termios restore");
+            return Keys::Ctrl('C');
+        }
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "ctrl_standar", feature = "full",))]
+    #[cfg(not(feature = "standar"))]
+    for &(ref pattern, keys) in CTRL_STANDAR.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "ctrl_numbers", feature = "full"))]
+    for &(ref pattern, keys) in CTRL_NUMBERS.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "alt_lower_letter", feature = "full"))]
+    for &(ref pattern, keys) in ALT_LOWER_LETTER.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "alt_upper_letter", feature = "full"))]
+    for &(ref pattern, keys) in ALT_UPPER_LETTER.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "alt_numbers", feature = "full"))]
+    for &(ref pattern, keys) in ALT_NUMBERS.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "alt_gr_lower_letter", feature = "full"))]
+    for &(ref pattern, keys) in ALT_GR_LOWER_LETTER.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "alt_gr_upper_letter", feature = "full"))]
+    for &(ref pattern, keys) in ALT_GR_UPPER_LETTER.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    #[cfg(any(feature = "alt_gr_numbers", feature = "full"))]
+    for &(ref pattern, keys) in ALT_GR_NUMBERS.iter() {
+        if buffer == *pattern {
+            restore(&termios_enviroment).expect("Error with termios restore");
+            key = keys;
+        }
+    }
+
+    restore(&termios_enviroment).expect("Error with termios restore");
+
+    #[cfg(any(
+        feature = "ctrl_lower_letter",
+        feature = "ctrl_upper_letter",
+        feature = "full"
+    ))]
+    unsafe {
+        signal(SIGINT, 0)
+    };
+
+    key
 }
