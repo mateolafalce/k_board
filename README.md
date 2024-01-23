@@ -77,7 +77,7 @@ fn menu(operation: u8) {
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["ctrl_lower_letter", "ctrl_upper_letter", "lower_letter"] }
+k_board = { version = "1.2.4", features = ["ctrl_lower_letter", "ctrl_upper_letter", "lower_letter"] }
 ```
 
 ```rust
@@ -111,7 +111,7 @@ fn do_this() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["f"] }
+k_board = { version = "1.2.4", features = ["f"] }
 ```
 
 ```rust
@@ -139,7 +139,7 @@ fn full_screen() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["numbers"] }
+k_board = { version = "1.2.4", features = ["numbers"] }
 ```
 
 ```rust
@@ -169,7 +169,7 @@ fn share() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["numbers"] }
+k_board = { version = "1.2.4", features = ["numbers"] }
 ```
 
 ```rust
@@ -235,7 +235,7 @@ fn menu(operation: &mut i8, selection: i8) {
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["standar"] }
+k_board = { version = "1.2.4", features = ["standar"] }
 ```
 
 ```rust
@@ -265,7 +265,7 @@ fn email() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["ctrl_standar"] }
+k_board = { version = "1.2.4", features = ["ctrl_standar"] }
 ```
 
 ```rust
@@ -293,7 +293,7 @@ fn zoom() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["alt_lower_letter", "alt_upper_letter"] }
+k_board = { version = "1.2.4", features = ["alt_lower_letter", "alt_upper_letter"] }
 ```
 
 ```rust
@@ -321,7 +321,7 @@ fn angry() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["lower_letter", "upper_letter"] }
+k_board = { version = "1.2.4", features = ["lower_letter", "upper_letter"] }
 ```
 
 ```rust
@@ -349,7 +349,7 @@ fn upper_case() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["alt_gr_lower_letter", "alt_gr_upper_letter"] }
+k_board = { version = "1.2.4", features = ["alt_gr_lower_letter", "alt_gr_upper_letter"] }
 ```
 
 ```rust
@@ -377,7 +377,7 @@ fn f2() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.2", features = ["ctrl_numbers", "alt_numbers", "alt_gr_numbers"] }
+k_board = { version = "1.2.4", features = ["ctrl_numbers", "alt_numbers", "alt_gr_numbers"] }
 ```
 
 ```rust
@@ -457,7 +457,7 @@ This has allowed k_board to be **441.86%** and **1046.51%** lighter than keyboar
 
 last versions of all crates to date.
 
-k_board(1.2.2) vs termion(2.0.3) vs crossterm(0.27.0)
+k_board(1.2.4) vs termion(3.0.0) vs crossterm(0.27.0)
 
 ```bash
 # for k_board
@@ -494,9 +494,9 @@ rm -rf crossterm_
 
 Results: 
 
-- k_board: 4,3 MB 
-- termion: 19 MB
-- crossterm: 45 MB
+- k_board: 4,2 MB 
+- termion: 18 MB
+- crossterm: 43 MB
 
 <div align="center">
 
