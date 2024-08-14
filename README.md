@@ -11,7 +11,7 @@
 
 A lightweight keyboard mannager developed for dynamic programs by listening to keyboard events in raw mode (without the need to press enter). The handler has all the standard events of a western keyboard.
 
-- Gnu/Linux 
+- Only for Gnu/Linux distributions
 
 ```rust
 pub enum Keys {
