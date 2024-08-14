@@ -77,7 +77,7 @@ fn menu(operation: u8) {
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["ctrl_lower_letter", "ctrl_upper_letter", "lower_letter"] }
+k_board = { version = "1.2.5", features = ["ctrl_lower_letter", "ctrl_upper_letter", "lower_letter"] }
 ```
 
 ```rust
@@ -111,7 +111,7 @@ fn do_this() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["f"] }
+k_board = { version = "1.2.5", features = ["f"] }
 ```
 
 ```rust
@@ -139,7 +139,7 @@ fn full_screen() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["numbers"] }
+k_board = { version = "1.2.5", features = ["numbers"] }
 ```
 
 ```rust
@@ -169,7 +169,7 @@ fn share() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["numbers"] }
+k_board = { version = "1.2.5", features = ["numbers"] }
 ```
 
 ```rust
@@ -235,7 +235,7 @@ fn menu(operation: &mut i8, selection: i8) {
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["standar"] }
+k_board = { version = "1.2.5", features = ["standar"] }
 ```
 
 ```rust
@@ -265,7 +265,7 @@ fn email() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["ctrl_standar"] }
+k_board = { version = "1.2.5", features = ["ctrl_standar"] }
 ```
 
 ```rust
@@ -293,7 +293,7 @@ fn zoom() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["alt_lower_letter", "alt_upper_letter"] }
+k_board = { version = "1.2.5", features = ["alt_lower_letter", "alt_upper_letter"] }
 ```
 
 ```rust
@@ -321,7 +321,7 @@ fn angry() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["lower_letter", "upper_letter"] }
+k_board = { version = "1.2.5", features = ["lower_letter", "upper_letter"] }
 ```
 
 ```rust
@@ -349,7 +349,7 @@ fn upper_case() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["alt_gr_lower_letter", "alt_gr_upper_letter"] }
+k_board = { version = "1.2.5", features = ["alt_gr_lower_letter", "alt_gr_upper_letter"] }
 ```
 
 ```rust
@@ -377,7 +377,7 @@ fn f2() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.2.4", features = ["ctrl_numbers", "alt_numbers", "alt_gr_numbers"] }
+k_board = { version = "1.2.5", features = ["ctrl_numbers", "alt_numbers", "alt_gr_numbers"] }
 ```
 
 ```rust
@@ -450,53 +450,61 @@ pub fn get_key() -> std::io::Result<()> {
 
 k_board, is designed for low-level development (direct interaction with the OS), boasts high and efficient performance compared to other libraries dedicated to keyboard interaction. This is demonstrated by performance tests conducted and that you can also perform to verify the technical superiority of this crate.
 
-This has allowed k_board to be **441.86%** and **1046.51%** lighter than keyboard handling libraries without sacrificing quality and adding in-depth control to the developer over which part of the keyboard to manage and which not to.
+This has allowed k_board to be lighter than keyboard handling libraries without sacrificing quality and adding in-depth control to the developer over which part of the keyboard to manage and which not to.
 
 <details>
 <summary>Space test</summary>
 
 last versions of all crates to date.
 
-k_board(1.2.4) vs termion(3.0.0) vs crossterm(0.27.0)
+k_board(1.2.5) vs termion(4.0.2) vs crossterm(0.28.1)
 
 ```bash
+#!/bin/bash
+
+k=""
+t=""
+c=""
+
 # for k_board
 
-cargo new k_board_ &&
-cd k_board_/ &&
-cargo add k_board &&
-cargo build && 
-cd .. && 
-du k_board_/ -h &&
+cargo new k_board_
+cd k_board_/ 
+cargo add k_board 
+cargo build
+cd .. 
+k=$(du -sh k_board_/ | cut -f1)
 rm -rf k_board_
 
-# for termion
-
-cargo new termion_ &&
-cd termion_/ &&
-cargo add termion &&
-cargo build && 
-cd .. && 
-du termion_/ -h &&
+cargo new termion_
+cd termion_/
+cargo add termion 
+cargo build 
+cd .. 
+t=$(du -sh termion_/ | cut -f1)
 rm -rf termion_
 
 # for crossterm
 
-cargo new crossterm_ &&
-cd crossterm_/ &&
-cargo add crossterm &&
-cargo build && 
-cd .. && 
-du crossterm_/ -h &&
+cargo new crossterm_ 
+cd crossterm_/ 
+cargo add crossterm 
+cargo build 
+cd .. 
+c=$(du -sh crossterm_/ | cut -f1)
 rm -rf crossterm_
 
+echo "| crate      | space"
+echo "| k_board:   |" $k  
+echo "| termion:   |" $t  
+echo "| crossterm: |" $c 
 ```
 
 Results: 
 
-- k_board: 4,2 MB 
+- k_board: 4,0 MB 
 - termion: 18 MB
-- crossterm: 43 MB
+- crossterm: 53 MB
 
 
 </details>

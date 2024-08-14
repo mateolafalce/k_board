@@ -1,6 +1,6 @@
 [package]
 name = "k_board"
-version = "1.2.4"
+version = "1.2.5"
 edition = "2021"
 license = "GPL-3.0"
 authors = ["Mateo Lafalce <mateolafalce@protonmail.com>"]
