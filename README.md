@@ -79,7 +79,7 @@ fn menu(operation: u8) {
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["ctrl_lower_letter", "ctrl_upper_letter", "lower_letter"] }
+k_board = { version = "1.3.1", features = ["ctrl_lower_letter", "ctrl_upper_letter", "lower_letter"] }
 ```
 
 ```rust
@@ -114,7 +114,7 @@ fn do_this() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["f"] }
+k_board = { version = "1.3.1", features = ["f"] }
 ```
 
 ```rust
@@ -143,7 +143,7 @@ fn full_screen() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["numbers"] }
+k_board = { version = "1.3.1", features = ["numbers"] }
 ```
 
 ```rust
@@ -174,7 +174,7 @@ fn share() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["numbers"] }
+k_board = { version = "1.3.1", features = ["numbers"] }
 ```
 
 ```rust
@@ -241,7 +241,7 @@ fn menu(operation: &mut i8, selection: i8) {
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["standar"] }
+k_board = { version = "1.3.1", features = ["standar"] }
 ```
 
 ```rust
@@ -272,7 +272,7 @@ fn email() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["ctrl_standar"] }
+k_board = { version = "1.3.1", features = ["ctrl_standar"] }
 ```
 
 ```rust
@@ -301,7 +301,7 @@ fn zoom() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["alt_lower_letter", "alt_upper_letter"] }
+k_board = { version = "1.3.1", features = ["alt_lower_letter", "alt_upper_letter"] }
 ```
 
 ```rust
@@ -330,7 +330,7 @@ fn angry() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["lower_letter", "upper_letter"] }
+k_board = { version = "1.3.1", features = ["lower_letter", "upper_letter"] }
 ```
 
 ```rust
@@ -359,7 +359,7 @@ fn upper_case() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["alt_gr_lower_letter", "alt_gr_upper_letter"] }
+k_board = { version = "1.3.1", features = ["alt_gr_lower_letter", "alt_gr_upper_letter"] }
 ```
 
 ```rust
@@ -388,7 +388,7 @@ fn f2() {}
 
 ```toml
 [dependencies]
-k_board = { version = "1.3.0", features = ["ctrl_numbers", "alt_numbers", "alt_gr_numbers"] }
+k_board = { version = "1.3.1", features = ["ctrl_numbers", "alt_numbers", "alt_gr_numbers"] }
 ```
 
 ```rust
